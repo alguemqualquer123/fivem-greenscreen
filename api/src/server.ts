@@ -97,7 +97,7 @@ async function processQueue() {
 // Green screen removal (optimized)
 // ============================================
 
-async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 50): Promise<Buffer> {
+async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 20): Promise<Buffer> {
     const { data, info } = await sharp(inputBuffer)
         .raw()
         .toBuffer({ resolveWithObject: true });
@@ -110,8 +110,8 @@ async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 50
     const output = Buffer.alloc(pixelCount * 4);
 
     const refG = 255;
-    const threshold = 180 + tolerance;
-    const fringeThreshold = threshold + 60;
+    const threshold = 120 + tolerance;
+    const fringeThreshold = threshold + 40;
 
     for (let i = 0; i < pixelCount; i++) {
         const offset = i * channels;
