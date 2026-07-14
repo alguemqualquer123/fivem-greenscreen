@@ -33,6 +33,8 @@ window.addEventListener('message', function (event) {
     var container = document.getElementById('container');
     if (type == 'weathersync') {
       if (text) text.innerHTML = 'Disable weathersync resource!';
+    } else if (type == 'noargs') {
+      if (text) text.innerHTML = 'Usage: /screenshotvehicle &lt;model|all&gt;';
     } else {
       if (text) text.innerHTML = 'Error!';
     }

@@ -801,6 +801,12 @@ RegisterCommand('screenshotvehicle', function(source, args)
         local primarycolor = args[2] and tonumber(args[2]) or nil
         local secondarycolor = args[3] and tonumber(args[3]) or nil
 
+        if not vehicleType then
+            SendNUIMessage({ error = 'noargs' })
+            print('[greenscreener] Usage: /screenshotvehicle <model|all> [primarycolor] [secondarycolor]')
+            return
+        end
+
         if not stopWeatherResource() then return end
         DisableIdleCamera(true)
         SetEntityCoords(playerPed, Config.greenScreenHiddenSpot.x, Config.greenScreenHiddenSpot.y, Config.greenScreenHiddenSpot.z, false, false, false)
@@ -810,32 +816,42 @@ RegisterCommand('screenshotvehicle', function(source, args)
 
         local function spawnAndScreenshot(vehicleModel)
             local vehicleHash = GetHashKey(vehicleModel)
-            if not IsModelValid(vehicleHash) then return end
+            if not IsModelValid(vehicleHash) then
+                print('[greenscreener] ERROR: Invalid model: ' .. vehicleModel)
+                return false
+            end
 
             local vehicleClass = GetVehicleClassFromName(vehicleHash)
             if not Config.includedVehicleClasses[tostring(vehicleClass)] then
+                print('[greenscreener] Skipped: ' .. vehicleModel .. ' (class ' .. vehicleClass .. ' not included)')
                 SetModelAsNoLongerNeeded(vehicleHash)
-                return
+                return false
             end
 
             SendNUIMessage({ type = vehicleModel, value = 1, max = #vehicles + 1 })
 
+            local timeout = GetGameTimer() + Config.vehicleSpawnTimeout
             if not HasModelLoaded(vehicleHash) then
                 RequestModel(vehicleHash)
                 while not HasModelLoaded(vehicleHash) do
                     Wait(100)
+                    if GetGameTimer() > timeout then
+                        print('[greenscreener] ERROR: Timeout loading: ' .. vehicleModel)
+                        SetModelAsNoLongerNeeded(vehicleHash)
+                        return false
+                    end
                 end
             end
 
             local vehicle = CreateVehicle(vehicleHash, Config.greenScreenVehiclePosition.x, Config.greenScreenVehiclePosition.y, Config.greenScreenVehiclePosition.z, 0, true, true)
-            SetVehicleDirtLevel(vehicle, 0)
 
             if not vehicle or vehicle == 0 then
                 SetModelAsNoLongerNeeded(vehicleHash)
                 print('[greenscreener] ERROR: Could not spawn: ' .. vehicleModel)
-                return
+                return false
             end
 
+            SetVehicleDirtLevel(vehicle, 0)
             SetEntityRotation(vehicle, Config.greenScreenVehicleRotation.x, Config.greenScreenVehicleRotation.y, Config.greenScreenVehicleRotation.z, 0, false)
             FreezeEntityPosition(vehicle, true)
             SetVehicleWindowTint(vehicle, 1)
@@ -848,14 +864,23 @@ RegisterCommand('screenshotvehicle', function(source, args)
 
             DeleteEntity(vehicle)
             SetModelAsNoLongerNeeded(vehicleHash)
+            return true
         end
 
         if vehicleType == 'all' then
             SendNUIMessage({ start = true })
+            local successCount = 0
+            local failCount = 0
             for _, vehicleModel in ipairs(vehicles) do
-                spawnAndScreenshot(vehicleModel)
+                local result = spawnAndScreenshot(vehicleModel)
+                if result then
+                    successCount = successCount + 1
+                else
+                    failCount = failCount + 1
+                end
             end
             SendNUIMessage({ ["end"] = true })
+            print('[greenscreener] Vehicles done: ' .. successCount .. ' success, ' .. failCount .. ' failed, ' .. #vehicles .. ' total')
         else
             spawnAndScreenshot(vehicleType)
         end
