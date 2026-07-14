@@ -250,8 +250,12 @@ local function takeScreenshotForObject(object, modelHash, angle, modelName)
     local camDist = maxAll / 2 + 1.5
 
     -- Check if this prop needs extra distance
-    if modelName and Config.largeProps and Config.largeProps[modelName] then
-        camDist = camDist * Config.largeProps[modelName]
+    if modelName and Config.largeProps then
+        if Config.debug then print('[greenscreener] Checking largeProps for: ' .. tostring(modelName)) end
+        if Config.largeProps[modelName] then
+            camDist = camDist * Config.largeProps[modelName]
+            if Config.debug then print('[greenscreener] Applied multiplier: ' .. Config.largeProps[modelName] .. ' -> camDist: ' .. camDist) end
+        end
     end
 
     -- FOV based on object size
