@@ -47,6 +47,23 @@ Config.greenScreenVehicleRotation = { x = 0, y = 0, z = 254.03 }
 
 Config.greenScreenHiddenSpot = { x = -1224.22, y = -3349.63, z = 13.96 }
 
+-- Props that need extra camera distance (multiplier)
+Config.largeProps = {
+    ['angelicalwings_by_joao'] = 2.0,
+    ['angelicalwings_by_joao'] = 2.0,
+    ['angelaura_by_joao'] = 1.5,
+    ['bearangel_by_joao'] = 1.5,
+    ['demonaura_by_joao'] = 1.5,
+    ['pixiefairy_by_joao'] = 1.5,
+    ['pixiefairy2_by_joao'] = 1.5,
+    ['pixiefairy3_by_joao'] = 1.5,
+    ['pixiefairy4_by_joao'] = 1.5,
+    ['pixiefairy5_by_joao'] = 1.5,
+    ['pixiefairy6_by_joao'] = 1.5,
+    ['ghostfaceprop_flay'] = 1.3,
+    ['spiderman'] = 1.3,
+}
+
 Config.propsList = {
     'aishaenchantixanim_by_joao', 'americancrow_by_joao', 'angelaura_by_joao',
     'angelicalwings_by_joao', 'babydragon_by_joao', 'babydragon2_by_joao',

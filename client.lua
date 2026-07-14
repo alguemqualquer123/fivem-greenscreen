@@ -209,7 +209,7 @@ local function takeScreenshotForComponent(pedType, type, component, drawable, te
     Wait(1500)
 end
 
-local function takeScreenshotForObject(object, modelHash, angle)
+local function takeScreenshotForObject(object, modelHash, angle, modelName)
     setWeatherTime()
     Wait(100)
     destroyCam()
@@ -248,6 +248,11 @@ local function takeScreenshotForObject(object, modelHash, angle)
 
     -- Camera distance based on object size
     local camDist = maxAll / 2 + 1.5
+
+    -- Check if this prop needs extra distance
+    if modelName and Config.largeProps and Config.largeProps[modelName] then
+        camDist = camDist * Config.largeProps[modelName]
+    end
 
     -- FOV based on object size
     local fov = math.min(math.max(modelSize.x, modelSize.z) / 0.15 * 10, 60)
@@ -726,7 +731,7 @@ RegisterCommand('screenshotprops', function(source, args)
                     FreezeEntityPosition(object, true)
                     Wait(50)
 
-                    takeScreenshotForObject(object, modelHash, 180)
+                    takeScreenshotForObject(object, modelHash, 180, modelName)
 
                     DeleteEntity(object)
                     SetModelAsNoLongerNeeded(modelHash)
@@ -781,7 +786,7 @@ RegisterCommand('screenshotobject', function(source, args)
         FreezeEntityPosition(object, true)
         Wait(50)
 
-        takeScreenshotForObject(object, modelHash)
+        takeScreenshotForObject(object, modelHash, nil, modelName)
 
         DeleteEntity(object)
         SetPlayerControl(playerId, true)
