@@ -1,12 +1,13 @@
 Config = {}
 
-Config.debug = true
+Config.debug = false
 Config.includeTextures = false
 Config.overwriteExistingImages = true
 Config.useQBVehicles = false
 Config.coreResourceName = 'qb-core'
 Config.vehicleSpawnTimeout = 5000
-Config.webhook = 'https://discord.com/api/webhooks/1400193854476386355/vJui4sSOp4Ix_gzjcRkj0_i5qeb-FAZkz_IXVK3pPwa1esmzlG2axpRLStst_MUUQBFO'
+Config.webhook = ''
+Config.API_URL = 'http://127.0.0.1:3210'
 
 Config.includedVehicleClasses = {
     ['0'] = true, ['1'] = true, ['2'] = true, ['3'] = true,

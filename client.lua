@@ -4,7 +4,7 @@ local ped = nil
 local playerId = PlayerId()
 local QBCore = nil
 
-local API_URL = 'http://127.0.0.1:3210'
+local API_URL = Config.API_URL or 'http://127.0.0.1:3210'
 
 if Config.useQBVehicles then
     QBCore = exports[Config.coreResourceName]:GetCoreObject()
@@ -206,7 +206,7 @@ local function takeScreenshotForComponent(pedType, type, component, drawable, te
     local texStr = texture and ('_' .. texture) or ''
     local filename = pedType .. '_' .. propName .. component .. '_' .. drawable .. texStr
     doScreenshot(filename, 'clothing')
-    Wait(100)
+    Wait(1500)
 end
 
 local function takeScreenshotForObject(object, modelHash, angle)
@@ -264,7 +264,7 @@ local function takeScreenshotForObject(object, modelHash, angle)
 
     Wait(50)
     doScreenshot(tostring(modelHash), 'objects')
-    Wait(100)
+    Wait(1500)
 end
 
 local function takeScreenshotForVehicle(vehicle, modelHash, modelName)
@@ -309,7 +309,7 @@ local function takeScreenshotForVehicle(vehicle, modelHash, modelName)
 
     Wait(50)
     doScreenshot(modelName, 'vehicles')
-    Wait(100)
+    Wait(1500)
 end
 
 -- ============================================

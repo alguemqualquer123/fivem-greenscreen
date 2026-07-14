@@ -58,7 +58,7 @@ Criado para servidores FiveM que precisam gerar imagens limpas de props e itens 
 
 ```bash
 cd resources
-git clone https://github.com/alguemqualquer123/fivem-greenscreener.git
+git clone https://github.com/alguemqualquer123/fivem-greenscreen.git
 cd fivem-greenscreener
 ```
 
@@ -218,9 +218,9 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 ## 🔗 Links Úteis
 
-- 📦 [Repositório](https://github.com/alguemqualquer123/fivem-greenscreener)
-- 🐛 [Reportar Bug](https://github.com/alguemqualquer123/fivem-greenscreener/issues)
-- 💡 [Solicitar Feature](https://github.com/alguemqualquer123/fivem-greenscreener/issues)
+- 📦 [Repositório](https://github.com/alguemqualquer123/fivem-greenscreen)
+- 🐛 [Reportar Bug](https://github.com/alguemqualquer123/fivem-greenscreen/issues)
+- 💡 [Solicitar Feature](https://github.com/alguemqualquer123/fivem-greenscreen/issues)
 
 ---
 
