@@ -94,10 +94,10 @@ async function processQueue() {
 }
 
 // ============================================
-// Green screen removal (optimized)
+// Green screen removal (precise color #02C811)
 // ============================================
 
-async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 20): Promise<Buffer> {
+async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 15): Promise<Buffer> {
     const { data, info } = await sharp(inputBuffer)
         .raw()
         .toBuffer({ resolveWithObject: true });
@@ -109,41 +109,36 @@ async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 20
 
     const output = Buffer.alloc(pixelCount * 4);
 
-    const refG = 255;
-    const threshold = 120 + tolerance;
-    const fringeThreshold = threshold + 40;
+    // Target color: #02C811 (RGB: 2, 200, 17)
+    const targetR = 2;
+    const targetG = 200;
+    const targetB = 17;
+
+    // Tolerance threshold for color matching
+    const maxDist = tolerance * tolerance * 3; // Euclidean distance squared
 
     for (let i = 0; i < pixelCount; i++) {
         const offset = i * channels;
         const outOffset = i * 4;
 
-        let r = data[offset];
-        let g = channels >= 2 ? data[offset + 1] : r;
-        let b = channels >= 3 ? data[offset + 2] : r;
+        const r = data[offset];
+        const g = channels >= 2 ? data[offset + 1] : r;
+        const b = channels >= 3 ? data[offset + 2] : r;
 
-        const dr = r;
-        const dg = g - refG;
-        const db = b;
+        // Calculate distance to target color
+        const dr = r - targetR;
+        const dg = g - targetG;
+        const db = b - targetB;
         const distSq = dr * dr + dg * dg + db * db;
-        const isGreenHue = g >= r && g >= b && g > 60;
 
-        if (distSq < threshold * threshold && isGreenHue) {
+        if (distSq < maxDist) {
+            // Exact match - make transparent
             output[outOffset] = r;
             output[outOffset + 1] = g;
             output[outOffset + 2] = b;
             output[outOffset + 3] = 0;
-        } else if (distSq < fringeThreshold * fringeThreshold && isGreenHue) {
-            const dist = Math.sqrt(distSq);
-            const blend = (dist - threshold) / 60;
-            output[outOffset] = r;
-            output[outOffset + 1] = g;
-            output[outOffset + 2] = b;
-            output[outOffset + 3] = Math.round(255 * blend);
         } else {
-            // Desaturate green tint
-            const greenTint = Math.max(0, g - Math.max(r, b));
-            if (greenTint > 20) g = Math.max(0, Math.round(g - greenTint * 0.6));
-
+            // Keep original pixel unchanged
             output[outOffset] = r;
             output[outOffset + 1] = g;
             output[outOffset + 2] = b;
@@ -152,7 +147,7 @@ async function removeGreenBackground(inputBuffer: Buffer, tolerance: number = 20
     }
 
     return sharp(output, { raw: { width, height, channels: 4 } })
-        .png({ compressionLevel: 1 }) // fast compression
+        .png({ compressionLevel: 0 }) // No compression for maximum quality
         .toBuffer();
 }
 
