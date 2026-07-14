@@ -247,41 +247,40 @@ local function takeScreenshotForObject(object, modelHash, angle)
     local maxAll = math.max(modelSize.x, modelSize.y, modelSize.z)
 
     -- Adaptive camera distance based on object size
-    -- Small objects: closer, Large objects: farther
+    -- Increased distances to avoid cutting off objects
     local camDist
     if maxAll < 0.5 then
         -- Tiny objects (small props, food items)
-        camDist = maxAll / 2 + 0.8
+        camDist = maxAll + 1.5
     elseif maxAll < 1.5 then
         -- Medium objects (bags, hats, small wings)
-        camDist = maxAll / 2 + 1.2
+        camDist = maxAll + 2.5
     elseif maxAll < 3.0 then
         -- Large objects (big wings, large props)
-        camDist = maxAll / 2 + 1.8
+        camDist = maxAll + 3.5
     else
         -- Extra large objects (huge wings, massive props)
-        camDist = maxAll / 2 + 2.5
+        camDist = maxAll + 5.0
     end
 
     -- Adaptive FOV based on object size
-    -- Smaller FOV for larger objects to fit everything in frame
     local fov
     if maxAll < 0.5 then
-        fov = 30
+        fov = 25
     elseif maxAll < 1.0 then
-        fov = 35
+        fov = 30
     elseif maxAll < 2.0 then
-        fov = 40
+        fov = 35
     elseif maxAll < 4.0 then
-        fov = 50
+        fov = 45
     else
-        fov = 60
+        fov = 55
     end
 
     -- Adjust camera height based on object height
-    local camHeight = modelSize.z / 3
+    local camHeight = modelSize.z / 4
     if modelSize.z > 2.0 then
-        camHeight = modelSize.z / 4
+        camHeight = modelSize.z / 5
     end
 
     -- Use object heading to position camera in FRONT
