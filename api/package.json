@@ -1,0 +1,21 @@
+{
+  "name": "greenscreener-api",
+  "version": "1.0.0",
+  "description": "Local API for greenscreener - receives screenshots and removes green background",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0"
+  }
+}

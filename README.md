@@ -1,89 +1,231 @@
-# fivem-greenscreener
+# 🎬 FiveM Greenscreener
 
-A small script that allows you to take screenshots of every gta clothing, prop/object or vehicle against a greenscreen.
-You can use them for example in your inventory, clothing store or vehicle store.
+![License](https://img.shields.io/github/license/alguemqualquer123/fivem-greenscreener?style=flat-square)
+![Version](https://img.shields.io/badge/version-2.0.0-green?style=flat-square)
+![FiveM](https://img.shields.io/badge/FiveM-Resource-blue?style=flat-square)
+![Lua](https://img.shields.io/badge/Lua-5.1-yellow?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square)
 
-**!!! Only use it for development purpose, the script is not meant for production servers !!!**
+> 🖼️ Sistema automatizado de captura de screenshots para FiveM com remoção de green screen via API local.
 
-## Using the images
+---
 
-You are granted the freedom to utilize the images in your open-source projects with proper accreditation.
-For commercial usage, please reach out to me on Discord to discuss the conditions.
+## 📋 Sobre o Projeto
 
-## Key Features
+O **FiveM Greenscreener** é um resource completo para FiveM que automatiza a captura de screenshots de props, roupas, veículos e objetos com fundo verde. Inclui uma API local em TypeScript que remove o green screen em tempo real e salva as imagens com transparência.
 
-- Capture screenshots of every GTA clothing item, including addon clothing
-- Capture screenshots of all objects and props in GTA, including addon props
-- Capture screenshots of every vehicle in GTA, including addon vehicles
-- Screenshots are labeled comprehensively for seamless integration into your scripts
-- Minimalistic progress UI for user convenience
-- Almost completely invisible ped
-- Customizable camera positions through configuration settings
-- Option to enable cycling through texture variations
-- Automatic removal of the greenscreen backdrop (courtesy of [@hakanesnn](https://github.com/hakanesnn))
-- Utilizes a large greenscreen box (thanks to [@jimgordon20](https://github.com/jimgordon20/jim_g_green_screen))
+### 🎯 Por que existe?
 
-## Planned Updates
+Criado para servidores FiveM que precisam gerar imagens limpas de props e itens para uso em lojas, inventários, wikis ou qualquer sistema que exija imagens com fundo transparente.
 
-- Feel free to share any ideas or suggestions for future enhancements!
+---
 
-## Installation
+## ✨ Principais Funcionalidades
 
-Simply clone the repository and place the resource in your resources folder.
+| Funcionalidade | Descrição |
+|----------------|-----------|
+| 🎮 **Modo de Posicionamento** | Interface interativa com freecam para posicionar props antes da captura |
+| 🖥️ **API Local TypeScript** | Servidor HTTP que processa imagens em fila com 4 workers paralelos |
+| 🧹 **Remoção de Green Screen** | Algoritmo de distância euclidiana com limpeza de bordas |
+| 📦 **Fila em Memória** | Processamento assíncrono e paralelo para máxima velocidade |
+| 🎨 **Multi-Tipo** | Suporta props, roupas (CLOTHING), veículos e objetos genéricos |
 
-**Do not use a subfolder like `resources/[scripts]` as it will cause the script to malfunction.**
+---
 
-## Dependencies
+## 🎬 Demonstração
 
-- [screenshot-basic](https://github.com/citizenfx/screenshot-basic)
-- yarn
+```
+/green <nome_do_prop>    → Modo de posicionamento interativo
+/propsscreenshot         → Batch automático de todos os props
+/clothingscreenshot      → Batch de todas as roupas
+```
 
-## Usage
+---
 
-### Screenshot all clothing
+## 📦 Pré-requisitos
 
-Execute the command `/screenshot` to initiate the clothing screenshot process.
-Be patient as it may take some time to complete, and it's advisable not to interfere with your PC during this operation.
+| Requisito | Versão | Obs |
+|-----------|--------|-----|
+| [FiveM](https://fivem.net/) | Server | FXServer rodando |
+| [Node.js](https://nodejs.org/) | v18+ | Para a API local |
+| [screenshot-basic](https://github.com/citizenfx/screenshot-basic) | Latest | Resource FiveM |
 
+---
 
-### Screenshot specific clothing
+## ⚙️ Instalação
 
-Utilize the command `/customscreenshot` to capture a specific clothing item, with optional custom camera settings specified in the format outlined in `config.json`.
+### 1. Clone o repositório
 
-`/customscreenshot [component] [drawable/all] [props/clothing] [male/female/both] [camerasettings(optional)]`
+```bash
+cd resources
+git clone https://github.com/alguemqualquer123/fivem-greenscreener.git
+cd fivem-greenscreener
+```
 
-`/customscreenshot 11 17 clothing male {"fov": 55, "rotation": { "x": 0, "y": 0, "z": 15}, "zPos": 0.26}`
+### 2. Instale a API local
 
-`/customscreenshot 11 all clothing male {"fov": 55, "rotation": { "x": 0, "y": 0, "z": 15}, "zPos": 0.26}`
+```bash
+cd api
+npm install
+npx tsc
+```
 
+### 3. Inicie a API
 
-### Screenshot objects/props
+```bash
+node dist/server.js
+```
 
-To screenshot objects or props, employ the command `/screenshotobject [hash]`.
+### 4. Adicione ao `server.cfg`
 
-Example Usage:
-`/screenshotobject 2240524752`
+```cfg
+ensure screenshot-basic
+ensure fivem-greenscreener
+```
 
-### Screenshot vehicles
+---
 
-Capture screenshots of vehicles using `/screenshotvehicle [model/all] [primarycolor(optional)] [secondarycolor(optional)]`.
+## 🚀 Como Utilizar
 
-Example Usage:
-`/screenshotvehicle all 1 1`
+### Comandos Disponíveis
 
-`/screenshotvehicle zentorno 1 1`
+| Comando | Descrição |
+|---------|-----------|
+| `/green <prop>` | Modo de posicionamento interativo com freecam |
+| `/propsscreenshot` | Batch automático de todos os props do `config.lua` |
+| `/clothingscreenshot` | Batch de todas as variações de roupas |
+| `/object <modelo>` | Screenshot de um objeto específico |
+| `/vehicle <modelo>` | Screenshot de um veículo |
 
-## Examples
+### Modo de Posicionamento
 
-<img src="https://i.imgur.com/2WJyGgy.png" width="200"> <img src="https://i.imgur.com/aAQwU4d.png" width="200">
-<img src="https://i.imgur.com/EqY5Inu.png" width="200"> <img src="https://i.imgur.com/ctTF9M9.png" width="200">
-<img src="https://i.imgur.com/6qD7hF3.png" width="200"> <img src="https://i.imgur.com/xdMyGyk.png" width="200">
+```
+/green bag_hellokitty
+```
 
-## Support
+| Controle | Ação |
+|----------|------|
+| `WASD` | Mover câmera |
+| `Q / E` | Câmera subir / descer |
+| `Mouse` | Olhar ao redor |
+| `Scroll` | Zoom (FOV) |
+| `Setas` | Mover objeto |
+| `Shift + Setas` | Rotacionar objeto |
+| `Ctrl + Setas ↑↓` | Objeto subir/descer |
+| `Enter` | Confirmar e iniciar batch |
+| `Backspace` | Cancelar |
 
-For support just join my [discord](https://discord.gg/yN96thgggk).
+### API Endpoints
 
-## Support the Project
+```
+POST /queue         → Enfileira uma imagem (instantâneo)
+POST /queue-batch   → Enfileira várias imagens
+GET  /status        → Status da fila
+GET  /health        → Health check
+POST /clear         → Limpar fila
+```
 
-If you wish to support this project, consider buying me a coffee on [ko-fi](https://ko-fi.com/bentix). Your support is greatly appreciated! ❤️​
+Exemplo com curl:
 
+```bash
+curl -X POST http://127.0.0.1:3210/queue \
+  -H "Content-Type: application/json" \
+  -d '{"filename":"objects/test.png","image":"data:image/png;base64,..."}'
+```
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+| Tecnologia | Uso |
+|------------|-----|
+| **Lua** | Client/Server FiveM (natives, controles, lógica) |
+| **TypeScript** | API local para processamento de imagens |
+| **Node.js** | Runtime da API |
+| **Express** | Servidor HTTP da API |
+| **Sharp** | Processamento e manipulação de imagens |
+| **screenshot-basic** | Captura de screenshots no FiveM |
+| **NUI (HTML/CSS/JS)** | Interface de posicionamento e upload |
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+fivem-greenscreener/
+├── api/                    # API local TypeScript
+│   ├── src/
+│   │   └── server.ts       # Servidor Express + processamento
+│   ├── dist/               # Build compilado
+│   ├── package.json
+│   └── tsconfig.json
+├── html/                   # Interface NUI
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── images/                 # Screenshots salvos
+├── stream/                 # Assets do FiveM
+├── client.lua              # Lógica client
+├── server.lua              # Lógica server
+├── config.lua              # Configurações
+├── fxmanifest.lua          # Manifest do resource
+└── package.json
+```
+
+---
+
+## ⚙️ Configuração
+
+Edite `config.lua` para personalizar:
+
+```lua
+Config.debug = true                    -- Logs detalhados
+Config.includeTextures = false         -- Incluir texturas (mais lento)
+Config.overwriteExistingImages = true  -- Sobrescrever imagens existentes
+Config.vehicleSpawnTimeout = 5000      -- Timeout para spawn de veículos
+
+-- Posição da tela verde
+Config.greenScreenPosition = { x = -1289.02, y = -3409.83, z = 20.91 }
+Config.greenScreenRotation = { x = 0, y = 0, z = 330 }
+
+-- Lista de props para batch
+Config.propsList = {
+    "nome_do_prop_1",
+    "nome_do_prop_2",
+    -- ...
+}
+```
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Siga estes passos:
+
+1. **Fork** o repositório
+2. Crie uma **branch** para sua feature (`git checkout -b feature/nova-feature`)
+3. **Commit** suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. **Push** para a branch (`git push origin feature/nova-feature`)
+5. Abra um **Pull Request**
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 🔗 Links Úteis
+
+- 📦 [Repositório](https://github.com/alguemqualquer123/fivem-greenscreener)
+- 🐛 [Reportar Bug](https://github.com/alguemqualquer123/fivem-greenscreener/issues)
+- 💡 [Solicitar Feature](https://github.com/alguemqualquer123/fivem-greenscreener/issues)
+
+---
+
+## 🙏 Agradecimentos
+
+- [FiveM](https://fivem.net/) - Plataforma
+- [citizenfx](https://github.com/citizenfx) - screenshot-basic
+- [sharp](https://sharp.pixelplumbing.com/) - Processamento de imagens

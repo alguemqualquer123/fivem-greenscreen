@@ -1,0 +1,13 @@
+{
+  "name": "prop-photo-system-processor",
+  "version": "1.0.0",
+  "description": "Green background removal processor for prop_photo_system",
+  "main": "process.js",
+  "scripts": {
+    "process": "node process.js"
+  },
+  "dependencies": {
+    "pngjs": "^7.0.0",
+    "sharp": "^0.33.0"
+  }
+}

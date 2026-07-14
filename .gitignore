@@ -26,6 +26,10 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov
+.mimocode
+.opencode
+.codex
+.claude
 
 # nyc test coverage
 .nyc_output
@@ -159,3 +163,11 @@ dist
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/node,yarn
+
+
+images/objects/*
+images/clothing/*
+images/vehicles/*
+images/.keep
+api/dist/
+api/node_modules/
